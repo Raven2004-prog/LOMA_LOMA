@@ -1,19 +1,11 @@
 import json
 import pickle
+import pandas as pd
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-import pandas as pd
-
-
-def load_labeled_features(json_path):
-    """
-    Loads a labeled feature set from a JSON file where each entry is:
-    {
-        "text": ..., "page": ..., "text_len": ..., ..., "label": "H1" or "BODY" etc.
-    }
-    """
-    return pd.read_json(json_path)
+import os
 
 
 def train_and_save_model(data_path, save_path="model/sk_model.pkl"):
@@ -24,34 +16,47 @@ def train_and_save_model(data_path, save_path="model/sk_model.pkl"):
     X = df[feature_cols]
     y = df["label"]
 
-    # Encode labels
+    # Encode labels to integers
     y_encoded = y.astype("category").cat.codes
-    label_mapping = dict(enumerate(y.astype('category').cat.categories))
+    label_mapping = dict(enumerate(y.astype("category").cat.categories))
 
-    # Split data
+    # Train/test split
     X_train, X_test, y_train, y_test = train_test_split(
         X, y_encoded, test_size=0.2, random_state=42
     )
 
-    # Train RandomForest
-    model = RandomForestClassifier(
-        n_estimators=100,
-        max_depth=8,
-        random_state=42,
-        n_jobs=-1
-    )
+    # Train classifier
+    model = RandomForestClassifier(n_estimators=100, max_depth=8, random_state=42)
     model.fit(X_train, y_train)
 
     # Evaluate
     y_pred = model.predict(X_test)
-    print(classification_report(y_test, y_pred, target_names=list(label_mapping.values())))
+
+    unique_classes = np.unique(y_test)
+    target_names = [label_mapping[i] for i in unique_classes]
+
+    print("📊 Classification Report:")
+    print(classification_report(
+        y_test,
+        y_pred,
+        labels=unique_classes,
+        target_names=target_names
+    ))
 
     # Save model and label mapping
-    with open(save_path, 'wb') as f:
-        pickle.dump({'model': model, 'labels': label_mapping}, f)
-    print(f"✅ Model and label mapping saved to {save_path}")
+    with open(save_path, "wb") as f:
+        pickle.dump({
+            "model": model,
+            "labels": label_mapping
+        }, f)
+
+    print(f"✅ Trained model saved to: {save_path}")
 
 
 if __name__ == "__main__":
-    data_path = "examples/labeled_features.json"  # adjust if needed
-    train_and_save_model(data_path)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", default="examples/labeled_features_1.json", help="Path to labeled features JSON")
+    args = parser.parse_args()
+
+    train_and_save_model(args.data)
