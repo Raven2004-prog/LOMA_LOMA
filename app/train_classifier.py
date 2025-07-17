@@ -65,7 +65,7 @@ def train_and_save_model(data_path, save_path=r"model\sk_model.pkl"):
         os.makedirs(save_dir, exist_ok=True)
     # Save model and label mapping
     with open(save_path, "wb") as f:
-        pickle.dump({"model": model, "labels": label_mapping}, f)
+        pickle.dump({"model": model, "labels": label_mapping, "feature_names": feature_cols}, f)
     print(f"✅ Model and label mapping saved to {save_path}")
 
 

@@ -1,0 +1,43 @@
+{
+  "TITLE": null,
+  "sections": [
+    {
+      "heading": "Untitled",
+      "content": [
+        "Kushagra Srivastava",
+        "Adm. No. 23JE0514 9 9807799060",
+        "kushagra16042004@gmail.com [J linkedin.com/in/kushagra ©) github.com/kushagra",
+        "Education",
+        "Indian Institute of Technology(ISM) Dhanbad Expected May 2027",
+        "Bachelor of Technology in Electronics and Communication Engineering (CGPA: 7.71 / 10.00) Dhanbad, Jharkhand",
+        "« Relevant Coursework: Data Structures and Algorithms (C++), Prob & Stat , Digital System and circuit design",
+        "Projects",
+        "Text Recognition Web App | HTML, CSS, React.js, Python, EasyOCR, Speller(autocorrect)",
+        "+ Implemented the EasyOCR model to extract text from the uploaded images.",
+        "« Used Speller from Autocorrect, a python library, to further improve the accuracy of the text extracted by the",
+        "EasyOCR model.",
+        "« Used NLTK python library to ensure that the words are in English by comparing the extracted words, enhancing the",
+        "accuracy of the model.",
+        "ShatteredSymmetry Game | Unity, C Sharp, Object Oriented Programming, Game design",
+        "+ Developed the Mechanics as well as the Ul, including the Menu and interactions of the game.",
+        "+ Designed the levels and scripted the complete gameplay of the game.",
+        "Technical Skills",
+        "Languages:Python, C++, Java, JavaScript, HTML, CSS.",
+        "Technologies: React.js, Angular, Express.js, PyTorch, Node.js, Spellchecker, EasyOCR",
+        "Concepts: Compiler, Artificial Intelligence, Machine Learning, Neural Networks, Computer Vision, API, Database",
+        "Normalization, Agile Methodology.",
+        "Achievements",
+        "e JEE Advanced rank 5327",
+        "¢ Tata Crucible Cluster Finalist",
+        "e NTSE stage 1 qualified.",
+        "e Top 1 percent in Hackfest.",
+        "e Represented IIT Dhanbad in Inter IIT tech meet for Game development.",
+        "Social Engagements",
+        "Club Member: Of Literary and Debating Club, IIT Dhanbad",
+        "Co-ordinator : Of Book Club, IIT Dhanbad",
+        "Club Member: at Animation and Game Design - tech club of IIT Dhanbad.",
+        "Sports-Engagements: Scrabble( Inter IIT Cultural), Debating"
+      ]
+    }
+  ]
+}

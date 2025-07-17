@@ -1,26 +1,28 @@
-# app/output_format.py
-
 def structure_output(predictions):
     """
-    Given list of predictions (each with text, label, page), return structured JSON grouped by labels.
+    Given list of predictions (each with text, label, page), return structured JSON
+    with document title and an outline of headings (H1, H2, H3).
     """
-
-    output = {
-        "TITLE": [],
-        "H1": [],
-        "H2": [],
-        "H3": [],
-        "BODY": []
+    result = {
+        "title": "",
+        "outline": []
     }
+
+    title_found = False
 
     for item in predictions:
         label = item["label"]
         text = item["text"]
+        page = item.get("page", -1)
 
-        if label in output:
-            output[label].append(text)
-        else:
-            # Optionally collect unknown labels if needed
-            print(f"⚠️ Unknown label: {label}")
-    
-    return output
+        if label == "TITLE" and not title_found:
+            result["title"] = text
+            title_found = True
+        elif label in {"H1", "H2", "H3"}:
+            result["outline"].append({
+                "level": label,
+                "text": text,
+                "page": page
+            })
+
+    return result
