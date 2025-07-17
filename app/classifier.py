@@ -1,42 +1,27 @@
 # app/classifier.py
 
-import pickle
-import os
+import pandas as pd
 
-# Load the trained model and label mapping on import
-MODEL_PATH = os.path.join(os.path.dirname(__file__), '../model/sk_model.pkl')
-
-with open(MODEL_PATH, 'rb') as f:
-    saved = pickle.load(f)
-    model = saved['model']
-    label_mapping = saved['labels']  # e.g., {0: 'BODY', 1: 'H1', 2: 'TITLE'}
-
-# Reverse mapping to get label → index (if needed later)
-label_inverse = {v: k for k, v in label_mapping.items()}
-
-
-def predict_labels(feature_dicts):
+def predict_labels(feature_dicts, model, label_mapping):
     """
-    Given a list of feature dicts (from feature extractor),
-    returns a list of (text, predicted_label) pairs.
+    Predict labels using the provided model. Return list of dicts with text, label, and page.
     """
 
-    results = []
+    # Filter out non-numeric columns
+    X = pd.DataFrame([
+        {k: v for k, v in feat.items() if k not in ["text", "page", "label"]}
+        for feat in feature_dicts
+    ])
 
-    for feat in feature_dicts:
-        if feat is None:
-            continue
+    preds = model.predict(X)
 
-        text = feat.get("text", "")
-        # Build feature vector (exclude keys not used in training)
-        input_features = [
-            feat[key]
-            for key in sorted(feat.keys())
-            if key not in ["text", "page", "label"]
-        ]
-        pred = model.predict([input_features])[0]
-        label = label_mapping[pred]
+    predictions = [
+        {
+            "text": feat["text"],
+            "label": label_mapping.get(pred, str(pred)),
+            "page": feat.get("page", -1)
+        }
+        for feat, pred in zip(feature_dicts, preds)
+    ]
 
-        results.append((text, label))
-
-    return results
+    return predictions
